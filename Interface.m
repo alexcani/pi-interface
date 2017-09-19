@@ -11,6 +11,8 @@
 % Ano/Semestre: 2017-2
 % 
 % Disciplina: Projeto Integrador (DAS5104)
+% Kit Didático para Controle
+
 function varargout = Interface()
 % Valida número de saídas
 nargoutchk(0,0);
