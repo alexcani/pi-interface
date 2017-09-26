@@ -10,7 +10,8 @@
 % Disciplina: Projeto Integrador (DAS5104)
 % Kit Didático para Controle
 
-function cb_startSimulation(hObject,eventdata)
-global ad;
+% IDEIA: CALLBACK DO CAMPO DE # DE CURVAS TRIGGA UMA FUNÇÃO PURGE_LINHAS
+% QUE GERENCIA AS COISAS
 
-return
+function linhas = retrieveLines()
+global ad;
