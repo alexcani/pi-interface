@@ -25,7 +25,8 @@ mfilepath=fileparts(which(mfilename)); % Caminho completo do arquivo
 addpath(fullfile(mfilepath, 'callbacks'))
 addpath(fullfile(mfilepath, 'functions'))
 
-
+% Carrega parâmetros do modelo
+parametros_modelo;
 
 tag = 'interface_kit';
 
