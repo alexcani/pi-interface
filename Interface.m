@@ -25,10 +25,10 @@ mfilepath=fileparts(which(mfilename)); % Caminho completo do arquivo
 addpath(fullfile(mfilepath, 'callbacks'))
 addpath(fullfile(mfilepath, 'functions'))
 
-% Carrega parâmetros do modelo
-parametros_modelo;
-
 tag = 'interface_kit';
+
+% Parâmetros do Modelo
+parametros_modelo;
 
 % Cria a interface se ela não existe
 % Exibe a interface se já foi criada

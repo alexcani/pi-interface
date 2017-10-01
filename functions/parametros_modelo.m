@@ -11,6 +11,7 @@
 % Kit Didático para Controle
 
 % Parâmetros para o modelo
+global M m L g;
 M = 0.5; % Massa do carrinho, em kg
 m = 0.05; % Massa do pêndulo, em kg
 L = 20; % Comprimento da haste do pêndulo (até o centro da bolinha), em cm

@@ -37,14 +37,18 @@ ad.handles.bt_paraSim.Enable = 'on';
 if isPause == 0 % Clicou em iniciar
     if ad.pausado == 0 % Clicou em iniciar e não estava pausado -> primeira vez
         % Criar novo conjunto de linhas
-        linhas = createLines(); % linhas é um struct de handles para as lines dos gráficos e o estado atual do modelo
+        %linhas = createLines(); AINDA VAI SER IMPLEMENTADO % linhas é um struct de handles para as lines dos gráficos e o estado atual do modelo
+        % Tendo as linhas, põe pra simular
+        ad.simulando = 1;
+        simulate(ad.linhas); % NECESSÁRIO MODIFICAR % Linhas já inclui os handles E o estado do modelo
     else % Estava pausado -> despausar
-        linhas = retrieveLines(); % Pega as linhas mais recentes para continuar a simulação
+        ad.pausado = 0;
+        %linhas = retrieveLines(); AINDA VAI SER IMPLEMENTADO % Pega as linhas mais recentes para continuar a simulação
     end
     
-    % Tendo as linhas, põe pra simular
-    simulate(linhas); % Linhas já inclui os handles E o estado do modelo
+    
 else % Clicou em pausar
+    disp('clicou pausar')
     ad.pausado = 1;
 end
 

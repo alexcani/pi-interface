@@ -11,9 +11,11 @@
 % Kit Didático para Controle
 
 % Recebe os estados e a entrada
-function [x1p, x2p, x3p, x4p] = modelo(x1, x2, x3, x4, u)
+function xp = modelo(~, x2, x3, x4, u)
+global M m L g;
 x1p = x2;
 x2p = (m*g*sin(x3)*cos(x3)+m*L*x4^2*sin(x3) + u)/(M+m*sin(x3)^2);
 x3p = x4;
 x4p = -((m+M)*g*sin(x3)+m*L*x4^2*sin(x3)*cos(x3)+u*cos(x3))/((M+m*sin(x3)^2)*L);
+xp = [x1p; x2p; x3p; x4p];
 return
