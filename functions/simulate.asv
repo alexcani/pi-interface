@@ -42,11 +42,11 @@ while(ad.simulando == 1)
         continue;
     else
         % Calcula controle
-        u = -K*(x - [ad.referencia; 0; 0; 0]);
+        u = -K*([ad.referenciax;
 %         u = max(min(50,u), -50);
         % Simula planta
         x = x + modelo(x(1), x(2), x(3), x(4), u)*dt;
-        t = round(t + dt, 2);
+        t = t + dt;
         
         % Atualiza linhas
         
@@ -55,16 +55,7 @@ while(ad.simulando == 1)
         T = get(posX, 'XData');
         T = [T t];
         % Ajusta os limites da visualização
-        if t > 5
-            if mod(t, 5) == 0
-                lim = [t-5 t+5];
-                set(ad.handles.axes_posCar, 'XLim', lim); % Limite em X
-                set(ad.handles.axes_velCar, 'XLim', lim); % Limite em X
-                set(ad.handles.axes_posPend, 'XLim', lim); % Limite em X
-                set(ad.handles.axes_velPend, 'XLim', lim); % Limite em X
-                set(ad.handles.axes_atuacao, 'XLim', lim); % Limite em X
-            end
-        end
+        
         % Posição do carrinho
         aux = get(posX, 'YData');
         aux = [aux x(1)];
