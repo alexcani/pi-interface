@@ -12,8 +12,13 @@
 
 function cb_closeMainWindow(hObject,~)
 % Recupera o path original
-global p;
+global p ad;
 path(p);
 
+ad.simulando = 0;
+ad.pausado = 0;
+
 % Fecha o programa e deleta a janela
+clear ad
+clear p
 delete(hObject);

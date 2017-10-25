@@ -10,39 +10,41 @@
 % Disciplina: Projeto Integrador (DAS5104)
 % Kit Didático para Controle
 
-function simulate(linhas)
+function simulate()
 global ad;
+% Pega a linha a ser simulada
+linhas = ad.linhas{1};
+% Separa os elementos dos graficos
+posX = linhas(1);
+velX = linhas(2);
+posT = linhas(3);
+velT = linhas(4);
+
+% Obtém t0
+atu = linhas(5);
+aux = get(atu, 'XData');
+t = aux(end);
+
+% Obtém o estado inicial
+x10 = get(posX, 'YData');
+x20 = get(velX, 'YData');
+x30 = get(posT, 'YData');
+x40 = get(velT, 'YData');
+x = [x10(end); x20(end); x30(end); x40(end)];
+
+% Temporário controle
+K = [0.8801 1.1557 -0.9331 -98.8855];
+
 % Sequencia:
 % - Pega estado atual
 % - Simula proximo passo
 % - Atualiza gráficos
 % - Espera 0.01s
-x0 = [-3; 0; 0.1; 0];
-x = x0;
-t = 0;
-K = [0.8801 1.1557 -0.9331 -98.8855];
 dt = 0.01;
-
-% Limpa as linhas e põe condições iniciais
-posX = linhas(1);
-velX = linhas(2);
-posT = linhas(3);
-velT = linhas(4);
-atu = linhas(5);
-
-set(posX, 'XData', 0, 'YData', x0(1));
-set(velX, 'XData', 0, 'YData', x0(2));
-set(posT, 'XData', 0, 'YData', x0(3));
-set(velT, 'XData', 0, 'YData', x0(4));
-set(atu, 'XData', 0, 'YData', 0);
-
-while(ad.simulando == 1)
-    if(ad.pausado == 1)
-        pause(dt);
-        continue;
-    else
+while(ad.simulando == 1 && ad.pausado == 0)
         % Calcula controle
         u = -K*(x - [ad.referencia; 0; 0; 0]);
+        % Satura
 %         u = max(min(50,u), -50);
         % Simula planta
         x = x + modelo(x(1), x(2), x(3), x(4), u)*dt;
@@ -64,35 +66,54 @@ while(ad.simulando == 1)
                 set(ad.handles.axes_velPend, 'XLim', lim); % Limite em X
                 set(ad.handles.axes_atuacao, 'XLim', lim); % Limite em X
             end
+        else
+            aux = [0 10];
+            set(ad.handles.axes_posCar, 'XLim', aux); % Limite em X
+            set(ad.handles.axes_velCar, 'XLim', aux); % Limite em X
+            set(ad.handles.axes_posPend, 'XLim', aux); % Limite em X
+            set(ad.handles.axes_velPend, 'XLim', aux); % Limite em X
+            set(ad.handles.axes_atuacao, 'XLim', aux); % Limite em X
         end
+        
+%         lim = get(ad.handles.axes_posCar, 'XLim');
         % Posição do carrinho
         aux = get(posX, 'YData');
         aux = [aux x(1)];
-        set(ad.handles.axes_posCar, 'YLim', [floor(min(aux)-0.1) ceil(max(aux)+0.1)]); % Limites em Y
+%         pontos = aux(1+lim(1)/dt:end);
+        pontos = aux(max(1, end-10/dt):end);
+        set(ad.handles.axes_posCar, 'YLim', [floor(min(pontos)-0.1) ceil(max(pontos)+0.1)]); % Limites em Y
         set(posX, 'XData', T, 'YData', aux);
         
         % Velocidade do carrinho
         aux = get(velX, 'YData');
         aux = [aux x(2)];
-        set(ad.handles.axes_velCar, 'YLim', [floor(min(aux)-0.1), ceil(max(aux)+0.1)]); % Limites em Y
+%         pontos = aux(1+lim(1)/dt:end);
+        pontos = aux(max(1, end-10/dt):end);
+        set(ad.handles.axes_velCar, 'YLim', [floor(min(pontos)-0.1), ceil(max(pontos)+0.1)]); % Limites em Y
         set(velX, 'XData', T, 'YData', aux);
         
         % Posição do pêndulo
         aux = get(posT, 'YData');
         aux = [aux x(3)];
-        set(ad.handles.axes_posPend, 'YLim', [floor(min(aux)-0.1), ceil(max(aux)+0.1)]); % Limites em Y
+%         pontos = aux(1+lim(1)/dt:end);
+        pontos = aux(max(1, end-10/dt):end);
+        set(ad.handles.axes_posPend, 'YLim', [floor(min(pontos)-0.1), ceil(max(pontos)+0.1)]); % Limites em Y
         set(posT, 'XData', T, 'YData', aux);
         
         % Velocidade do pêndulo
         aux = get(velT, 'YData');
         aux = [aux x(4)];
-        set(ad.handles.axes_velPend, 'YLim', [floor(min(aux)-0.1), ceil(max(aux)+0.1)]); % Limites em Y
+%         pontos = aux(1+lim(1)/dt:end);
+        pontos = aux(max(1, end-10/dt):end);
+        set(ad.handles.axes_velPend, 'YLim', [floor(min(pontos)-0.1), ceil(max(pontos)+0.1)]); % Limites em Y
         set(velT, 'XData', T, 'YData', aux);
         
         % Atuação
         aux = get(atu, 'YData');
         aux = [aux u];
-        set(ad.handles.axes_atuacao, 'YLim', [floor(min(aux)-0.1), ceil(max(aux)+0.1)]); % Limites em Y
+%         pontos = aux(1+lim(1)/dt:end);
+        pontos = aux(max(1, end-10/dt):end);
+        set(ad.handles.axes_atuacao, 'YLim', [floor(min(pontos)-0.1), ceil(max(pontos)+0.1)]); % Limites em Y
         set(atu, 'XData', T, 'YData', aux);
         
         % Atualiza o modelo 2D

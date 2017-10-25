@@ -20,6 +20,11 @@ hObject.Enable = 'off';
 % Modifica texto do botão de iniciar para Iniciar
 ad.handles.bt_iniciaPausaSim.String = 'Inicia';
 
+% Libera botões exportar e limpar tudo
+set(ad.handles.bt_cleanAll, 'Enable', 'on');
+set(ad.handles.bt_exportaSelecao, 'Enable', 'on');
+
 ad.simulando = 0;
+ad.pausado = 0;
 
 return

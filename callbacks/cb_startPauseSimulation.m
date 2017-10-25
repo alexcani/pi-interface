@@ -22,10 +22,15 @@ end
 
 %% Ações a serem tomadas em outros elementos quando o botão é pressionado
 % Alterna o texto do botão
-if isPause
+if isPause == 1 % Clicou em "Pausa"
     hObject.String = 'Inicia';
-else
+    % Libera botão de exportar, o de limpar ainda fica travado
+    set(ad.handles.bt_exportaSelecao, 'Enable', 'on');
+else % Clicou em "Iniciar"
     hObject.String = 'Pausa';
+    % Travar botão de exportar e de limpar
+    set(ad.handles.bt_cleanAll, 'Enable', 'off');
+    set(ad.handles.bt_exportaSelecao, 'Enable', 'off');
 end
 
 % Habilita botão de Parar
@@ -37,18 +42,15 @@ ad.handles.bt_paraSim.Enable = 'on';
 if isPause == 0 % Clicou em iniciar
     if ad.pausado == 0 % Clicou em iniciar e não estava pausado -> primeira vez
         % Criar novo conjunto de linhas
-        %linhas = createLines(); AINDA VAI SER IMPLEMENTADO % linhas é um struct de handles para as lines dos gráficos e o estado atual do modelo
+        createLines();% Cria as linhas e já armazena no global ad
         % Tendo as linhas, põe pra simular
         ad.simulando = 1;
-        simulate(ad.linhas); % NECESSÁRIO MODIFICAR % Linhas já inclui os handles E o estado do modelo
+        simulate(); % Simulate sempre usa o primeiro conjunto de linhas, fica a cargo das outras funções reorganizar
     else % Estava pausado -> despausar
         ad.pausado = 0;
-        %linhas = retrieveLines(); AINDA VAI SER IMPLEMENTADO % Pega as linhas mais recentes para continuar a simulação
+        simulate();
     end
-    
-    
 else % Clicou em pausar
-    disp('clicou pausar')
     ad.pausado = 1;
 end
 
