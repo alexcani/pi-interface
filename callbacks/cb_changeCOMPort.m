@@ -10,8 +10,18 @@
 % Disciplina: Projeto Integrador (DAS5104)
 % Kit Didático para Controle
 
-function cb_disturbPend(hObject,eventdata)
-global ad
+function cb_changeCOMPort(hObject,~)
+global ad;
 
-ad.pendPert = 1;
-return
+conversion = str2num(hObject.String);
+if isempty(conversion)
+    hObject.String = num2str(ad.COMPort);
+else
+    if(mod(conversion, 1) == 0 && conversion >=0)
+        ad.COMPort = conversion;
+    else
+        hObject.String = num2str(ad.COMPort);
+    end
+end
+
+end

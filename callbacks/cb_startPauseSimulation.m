@@ -26,11 +26,17 @@ if isPause == 1 % Clicou em "Pausa"
     hObject.String = 'Inicia';
     % Libera botão de exportar, o de limpar ainda fica travado
     set(ad.handles.bt_exportaSelecao, 'Enable', 'on');
+    % Trava botões de perturbação
+    set(ad.handles.bt_perturbaCarro, 'Enable', 'off');
+    set(ad.handles.bt_perturbaPend, 'Enable', 'off');
 else % Clicou em "Iniciar"
     hObject.String = 'Pausa';
     % Travar botão de exportar e de limpar
     set(ad.handles.bt_cleanAll, 'Enable', 'off');
     set(ad.handles.bt_exportaSelecao, 'Enable', 'off');
+    % Libera botões de perturbação
+    set(ad.handles.bt_perturbaCarro, 'Enable', 'on');
+    set(ad.handles.bt_perturbaPend, 'Enable', 'on');
 end
 
 % Habilita botão de Parar

@@ -11,5 +11,7 @@
 % Kit Didático para Controle
 
 function cb_disturbCart(hObject,eventdata)
+global ad
 
+ad.cartPert = 1;
 return

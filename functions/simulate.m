@@ -41,15 +41,26 @@ K = [0.8801 1.1557 -0.9331 -98.8855];
 % - Atualiza gráficos
 % - Espera 0.01s
 dt = 0.01;
+
+LimXCarrinho = [-50 50] - [-5 5]; % Ponto desejado - largura do carrinho = limite para o centro do carrinho
+
 while(ad.simulando == 1 && ad.pausado == 0)
         % Calcula controle
         u = -K*(x - [ad.referencia; 0; 0; 0]);
         % Satura
-%         u = max(min(50,u), -50);
+        u = max(min(100,u), -100);
+        
         % Simula planta
-        x = x + modelo(x(1), x(2), x(3), x(4), u)*dt;
+        pertCar = ad.cartPert*1000*sign(rand()-1/2); % sign(rand()-1/2) faz o sentido da perturbação ser aleatório
+        ad.cartPert = 0;
+        pertPend = ad.pendPert*100*sign(rand()-1/2);
+        ad.pendPert = 0;
+        x = x + modelo(x(1), x(2), x(3), x(4), u, pertCar, pertPend)*dt;
         t = round(t + dt, 2);
         
+        if(x(1) > LimXCarrinho(2) || x(1) < LimXCarrinho(1)) % Bateu!
+            cb_stopSimulation([],[]); % Simula o clique no botão de parar
+        end
         % Atualiza linhas
         
         % Eixo tempo
@@ -97,7 +108,7 @@ while(ad.simulando == 1 && ad.pausado == 0)
         aux = [aux x(3)];
 %         pontos = aux(1+lim(1)/dt:end);
         pontos = aux(max(1, end-10/dt):end);
-        set(ad.handles.axes_posPend, 'YLim', [floor(min(pontos)-0.1), ceil(max(pontos)+0.1)]); % Limites em Y
+        set(ad.handles.axes_posPend, 'YLim', [min(pontos)-0.05, max(pontos)+0.05]); % Limites em Y
         set(posT, 'XData', T, 'YData', aux);
         
         % Velocidade do pêndulo

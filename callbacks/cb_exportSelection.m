@@ -22,7 +22,7 @@ global ad;
 
 for i = 1:numel(ad.linhas) % Para cada conjunto de curvas
     v = [];
-    aux = ad.linhas{i}
+    aux = ad.linhas{i};
     
     v = [v get(aux(1), 'XData')']; % Tempo
     

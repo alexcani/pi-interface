@@ -10,8 +10,13 @@
 % Disciplina: Projeto Integrador (DAS5104)
 % Kit Didático para Controle
 
-function cb_disturbPend(hObject,eventdata)
-global ad
-
-ad.pendPert = 1;
-return
+function cb_ligaMotor(hObject,~)
+    global ad;
+    
+    if(strcmp(hObject.String,'Ligar Motor') == 1)
+        hObject.String = 'Desligar Motor';
+        fwrite(ad.serialObject, uint8(254));
+    else
+        hObject.String = 'Ligar Motor';
+        fwrite(ad.serialObject, uint8(255));
+    end

@@ -10,8 +10,7 @@
 % Disciplina: Projeto Integrador (DAS5104)
 % Kit Didático para Controle
 
-function cb_disturbPend(hObject,eventdata)
-global ad
-
-ad.pendPert = 1;
-return
+function cb_changePwm(hObject,~)
+    global ad;
+    uint8(floor(hObject.Value))
+    fwrite(ad.serialObject, uint8(floor(hObject.Value)));
